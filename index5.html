@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management & Analysis System</title>
+</head><body><script>
+
+// ========================================
+// 1. STUDENT CLASS AND CONSTRUCTOR
+// ========================================
+
+class Student {
+
+    constructor(id, name, grades, attendance) {
+
+        this.id = id;
+        this.name = name;
+        this.grades = grades;
+        this.attendance = attendance;
+
+    }
+
+
+    // ========================================
+    // 2. CALCULATE AVERAGE USING REDUCE
+    // ========================================
+
+    calculateAverage() {
+
+        let total = this.grades.reduce(
+            (sum, grade) => sum + grade, 0
+        );
+
+        return total / this.grades.length;
+
+    }
+
+
+    // ========================================
+    // 3. CALCULATE ACADEMIC GRADE
+    // ========================================
+
+    getGrade(average) {
+
+        if (average >= 90) {
+            return "A";
+        }
+
+        else if (average >= 80) {
+            return "B";
+        }
+
+        else if (average >= 70) {
+            return "C";
+        }
+
+        else if (average >= 60) {
+            return "D";
+        }
+
+        else if (average >= 50) {
+            return "E";
+        }
+
+        else {
+            return "F";
+        }
+
+    }
+
+
+    // ========================================
+    // 4. FINAL RESULT
+    // ========================================
+
+    getFinalResult(average) {
+
+        if (average >= 50 && this.attendance >= 75) {
+
+            return "Passed";
+
+        }
+
+        else {
+
+            return "Needs Review";
+
+        }
+
+    }
+
+}
+
+
+// ========================================
+// 5. CREATE STUDENTS OBJECTS ARRAY
+// ========================================
+
+let studentsList = [
+
+    new Student(101, "Ahmed Mohamed", [90, 95, 92], 95),
+
+    new Student(102, "Sara Ali", [80, 85, 88], 90),
+
+    new Student(103, "Omar Hassan", [40, 45, 50], 85),
+
+    new Student(104, "Mona Ahmed", [42, 46, 50], 80)
+
+];
+
+
+// ========================================
+// 6. STUDENTS REPORT
+// ========================================
+
+let report = "";
+
+report += "========================================\n";
+report += "             STUDENTS REPORT\n";
+report += "========================================\n\n";
+
+studentsList.forEach(student => {
+
+    let average = student.calculateAverage();
+
+    let grade = student.getGrade(average);
+
+    let result = student.getFinalResult(average);
+
+    report += "Student ID: " + student.id + "\n";
+
+    report += "Student Name: " + student.name + "\n";
+
+    report += "Average: " + average.toFixed(2) + "\n";
+
+    report += "Grade: " + grade + "\n";
+
+    report += "Final Result: " + result + "\n";
+
+    report += "Attendance: " + student.attendance + "%\n";
+
+    report += "----------------------------------------\n";
+
+});
+
+
+// ========================================
+// 7. MERCY COMMITTEE USING FILTER
+// ========================================
+
+let mercyStudents = studentsList.filter(student => {
+
+    let average = student.calculateAverage();
+
+    return average >= 40 && average <= 49;
+
+});
+
+
+// ========================================
+// 8. ADD 5 MERCY MARKS USING MAP
+// ========================================
+
+let updatedStudents = mercyStudents.map(student => {
+
+    let oldAverage = student.calculateAverage();
+
+    let newAverage = Math.min(oldAverage + 5, 100);
+
+    return {
+
+        id: student.id,
+
+        name: student.name,
+
+        oldAverage: oldAverage,
+
+        newAverage: newAverage
+
+    };
+
+});
+
+
+// ========================================
+// 9. SUM NEW AVERAGES USING REDUCE
+// ========================================
+
+let totalMercyAverage = updatedStudents.reduce(
+
+    (sum, student) => sum + student.newAverage,
+
+    0
+
+);
+
+
+// ========================================
+// 10. CALCULATE FINAL MERCY AVERAGE
+// ========================================
+
+let finalMercyAverage = 0;
+
+if (updatedStudents.length > 0) {
+
+    finalMercyAverage =
+        totalMercyAverage / updatedStudents.length;
+
+}
+
+else {
+
+    finalMercyAverage = 0;
+
+}
+
+
+// ========================================
+// 11. MERCY COMMITTEE REPORT
+// ========================================
+
+report += "\n\n";
+
+report += "========================================\n";
+report += "         MERCY COMMITTEE REPORT\n";
+report += "========================================\n\n";
+
+
+if (updatedStudents.length > 0) {
+
+    updatedStudents.forEach(student => {
+
+        report += "Student ID: " + student.id + "\n";
+
+        report += "Student Name: " + student.name + "\n";
+
+        report += "Old Average: " +
+            student.oldAverage.toFixed(2) + "\n";
+
+        report += "New Average After Mercy: " +
+            student.newAverage.toFixed(2) + "\n";
+
+        report += "----------------------------------------\n";
+
+    });
+
+}
+
+else {
+
+    report += "No Students Need Mercy Marks.\n";
+
+}
+
+
+// ========================================
+// 12. FINAL ANALYSIS
+// ========================================
+
+report += "\n";
+
+report += "========================================\n";
+report += "             FINAL ANALYSIS\n";
+report += "========================================\n\n";
+
+report += "Number of Mercy Students: " +
+    updatedStudents.length + "\n";
+
+report += "Total New Averages: " +
+    totalMercyAverage.toFixed(2) + "\n";
+
+report += "Final Mercy Average: " +
+    finalMercyAverage.toFixed(2) + "\n";
+
+report += "\n========================================\n";
+
+report += "SYSTEM FINISHED SUCCESSFULLY";
+
+report += "\n========================================";
+
+
+// ========================================
+// 13. DISPLAY COMPLETE SYSTEM REPORT
+// ========================================
+
+console.clear();
+
+console.log(report);
+
+</script></body></html>
